@@ -7,6 +7,18 @@ export type FactCategory =
 
 export type VerificationStatus = 'confirmed' | 'under_review' | 'refuted';
 
+export type PoliticalStatus = 'candidato' | 'em_exercicio' | 'ex_mandato';
+
+export type RoleCategory =
+  | 'Presidente'
+  | 'Governador'
+  | 'Senador'
+  | 'Deputado Federal'
+  | 'Deputado Estadual'
+  | 'Prefeito'
+  | 'Vereador'
+  | 'Outro';
+
 export interface SourceLink {
   id: string;
   title: string;
@@ -15,6 +27,19 @@ export interface SourceLink {
   publishDate: string;
   reliabilityScore: number; // 0 - 100 based on source authority
   isOfficialSource: boolean; // e.g. Diário Oficial, Judicial decisions, TSE
+}
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  snippet: string;
+  publisher: string;
+  url: string;
+  publishedAt: string;
+  topicCategory: 'scandal' | 'spending' | 'investigation' | 'proposal' | 'statement';
+  reliabilityScore: number;
+  relatedPoliticianId?: string;
+  relatedPoliticianName?: string;
 }
 
 export interface FactItem {
@@ -47,11 +72,14 @@ export interface PublicFigure {
   popularName: string;
   photoUrl: string;
   currentRole: string;
+  roleCategory: RoleCategory;
+  politicalStatus: PoliticalStatus;
   politicalParty: string;
   state: string; // UF, e.g. "SP", "RJ", "DF"
   biography: string;
   yearsInPublicOffice: number;
   facts: FactItem[];
+  recentNews?: NewsArticle[];
   score: ScoreBreakdown;
   tags: string[];
 }

@@ -48,6 +48,8 @@ describe('Scoring Service', () => {
       popularName: 'Pol A',
       photoUrl: '',
       currentRole: 'Cargo',
+      roleCategory: 'Deputado Federal',
+      politicalStatus: 'em_exercicio',
       politicalParty: 'Partido',
       state: 'SP',
       biography: '',

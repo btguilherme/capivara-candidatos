@@ -7,6 +7,8 @@ export const mockPoliticians: PublicFigure[] = [
     popularName: 'Marina Silva',
     photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400',
     currentRole: 'Ministra do Meio Ambiente e Mudança do Clima',
+    roleCategory: 'Deputado Federal',
+    politicalStatus: 'em_exercicio',
     politicalParty: 'REDE',
     state: 'AC',
     biography: 'Ambientalista, historiadora, pedagoga e política brasileira. Foi senadora pelo Acre, vereadora, deputada estadual e candidata à Presidência da República por três vezes.',
@@ -74,27 +76,18 @@ export const mockPoliticians: PublicFigure[] = [
             isOfficialSource: false
           }
         ]
-      },
+      }
+    ],
+    recentNews: [
       {
-        id: 'ms-fact-3',
-        title: 'Divulgação Integral de Gastos com Cota Parlamentar',
-        description: 'Todas as prestações de contas de verba parlamentar durante mandato no Senado apresentaram notas fiscais detalhadas no Portal da Transparência.',
-        category: 'public_spending',
-        date: '2018-12-01',
-        status: 'confirmed',
-        confidenceScore: 95,
-        impactScore: 8,
-        sources: [
-          {
-            id: 'src-ms-4',
-            title: 'Portal da Transparência do Senado Federal',
-            publisher: 'Senado Federal',
-            url: 'https://www12.senado.leg.br/transparencia',
-            publishDate: '2019-01-05',
-            reliabilityScore: 99,
-            isOfficialSource: true
-          }
-        ]
+        id: 'ms-news-1',
+        title: 'Ministério do Meio Ambiente apresenta balanço de ações contra desmatamento na Amazônia',
+        snippet: 'Relatório aponta queda significativa nos alertas de garimpo ilegal e fortalecimento das fiscalizações do IBAMA.',
+        publisher: 'G1 Política',
+        url: 'https://g1.globo.com/politica/',
+        publishedAt: '2024-03-01',
+        topicCategory: 'spending',
+        reliabilityScore: 95
       }
     ]
   },
@@ -103,10 +96,12 @@ export const mockPoliticians: PublicFigure[] = [
     name: 'Tabata Claudia Amaral de Pontes',
     popularName: 'Tabata Amaral',
     photoUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400',
-    currentRole: 'Deputada Federal',
+    currentRole: 'Candidata a Prefeita / Deputada Federal',
+    roleCategory: 'Prefeito',
+    politicalStatus: 'candidato',
     politicalParty: 'PSB',
     state: 'SP',
-    biography: 'Apolitica, cientista política e astrofísica formada em Harvard. Co-fundadora dos movimentos Mapa Educação e Acredito. Deputada Federal eleita por São Paulo.',
+    biography: 'Apolitica, cientista política e astrofísica formada em Harvard. Co-fundadora dos movimentos Mapa Educação e Acredito. Candidata à Prefeitura de São Paulo.',
     yearsInPublicOffice: 6,
     score: {
       transparencyScore: 92,
@@ -118,7 +113,7 @@ export const mockPoliticians: PublicFigure[] = [
       refutedFactsCount: 0,
       underReviewFactsCount: 1
     },
-    tags: ['Educação', 'São Paulo', 'PSB', 'Jovem Liderança'],
+    tags: ['Prefeitura SP', 'Educação', 'São Paulo', 'PSB', 'Candidato'],
     facts: [
       {
         id: 'ta-fact-1',
@@ -138,38 +133,79 @@ export const mockPoliticians: PublicFigure[] = [
             publishDate: '2021-09-15',
             reliabilityScore: 100,
             isOfficialSource: true
-          },
-          {
-            id: 'src-ta-2',
-            title: 'Sancionada lei de combate à pobreza menstrual',
-            publisher: 'Aos Fatos',
-            url: 'https://www.aosfatos.org',
-            publishDate: '2021-10-08',
-            reliabilityScore: 93,
-            isOfficialSource: false
           }
         ]
-      },
+      }
+    ],
+    recentNews: [
       {
-        id: 'ta-fact-2',
-        title: 'Ausência de processos ou investigação criminal por improbidade',
-        description: 'Sem registro de ações penais ou apurações de desvio de dinheiro público no STF, STJ ou TJSP.',
-        category: 'legal_cases',
-        date: '2024-02-01',
+        id: 'ta-news-1',
+        title: 'Candidata apresenta plano de metas para educação e transporte público na capital',
+        snippet: 'Propostas focam em creches em tempo integral e transparência nos contratos de transporte coletivo.',
+        publisher: 'Folha de S.Paulo',
+        url: 'https://www1.folha.uol.com.br/',
+        publishedAt: '2024-03-10',
+        topicCategory: 'proposal',
+        reliabilityScore: 94
+      }
+    ]
+  },
+  {
+    id: 'guilherme-boulos',
+    name: 'Guilherme Castro Boulos',
+    popularName: 'Guilherme Boulos',
+    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
+    currentRole: 'Candidato a Prefeito / Deputado Federal',
+    roleCategory: 'Prefeito',
+    politicalStatus: 'candidato',
+    politicalParty: 'PSOL',
+    state: 'SP',
+    biography: 'Professor, psicanalista, ativista social e político brasileiro. Coordenador do MTST e Deputado Federal mais votado em SP nas eleições de 2022.',
+    yearsInPublicOffice: 2,
+    score: {
+      transparencyScore: 89,
+      judicialIntegrityScore: 92,
+      factCheckAccuracyScore: 88,
+      overallHonestyScore: 90,
+      totalFactsAnalyzed: 8,
+      confirmedFactsCount: 7,
+      refutedFactsCount: 0,
+      underReviewFactsCount: 1
+    },
+    tags: ['Prefeitura SP', 'Habitação', 'PSOL', 'Candidato'],
+    facts: [
+      {
+        id: 'gb-fact-1',
+        title: 'Prestação de Contas Eleitorais Aprovada sem Ressalvas pelo TRE-SP',
+        description: 'Contas relativas à campanha para Deputado Federal em 2022 aprovadas integralmente pela Justiça Eleitoral.',
+        category: 'public_spending',
+        date: '2022-12-15',
         status: 'confirmed',
-        confidenceScore: 97,
-        impactScore: 9,
+        confidenceScore: 98,
+        impactScore: 8,
         sources: [
           {
-            id: 'src-ta-3',
-            title: 'Certidões de Distribuição de Processos - Tribunal de Justiça de SP',
-            publisher: 'TJSP',
-            url: 'https://www.tjsp.jus.br',
-            publishDate: '2024-02-01',
+            id: 'src-gb-1',
+            title: 'DivulgaCandContas - Prestação de Contas TRE-SP',
+            publisher: 'TSE / TRE-SP',
+            url: 'https://divulgacandcontas.tse.jus.br',
+            publishDate: '2022-12-15',
             reliabilityScore: 100,
             isOfficialSource: true
           }
         ]
+      }
+    ],
+    recentNews: [
+      {
+        id: 'gb-news-1',
+        title: 'Pesquisas e propostas de sabatina para o plano de moradia popular',
+        snippet: 'Candidato detalhou em sabatina propostas para regularização fundiária e orçamento participativo.',
+        publisher: 'UOL Notícias',
+        url: 'https://noticias.uol.com.br/',
+        publishedAt: '2024-03-12',
+        topicCategory: 'proposal',
+        reliabilityScore: 92
       }
     ]
   },
@@ -177,8 +213,10 @@ export const mockPoliticians: PublicFigure[] = [
     id: 'rodrigo-pacheco',
     name: 'Rodrigo Otavio Soares Pacheco',
     popularName: 'Rodrigo Pacheco',
-    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
+    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
     currentRole: 'Presidente do Senado Federal',
+    roleCategory: 'Senador',
+    politicalStatus: 'em_exercicio',
     politicalParty: 'PSD',
     state: 'MG',
     biography: 'Advogado e político brasileiro. Foi deputado federal e é atualmente senador por Minas Gerais e Presidente do Congresso Nacional.',
@@ -204,7 +242,6 @@ export const mockPoliticians: PublicFigure[] = [
         status: 'under_review',
         confidenceScore: 78,
         impactScore: -3,
-        notes: 'Decisão judicial no STF exigiu readequação e transparência das emendas orçamentárias geridas no Congresso.',
         sources: [
           {
             id: 'src-rp-1',
@@ -213,36 +250,6 @@ export const mockPoliticians: PublicFigure[] = [
             url: 'https://portal.stf.jus.br',
             publishDate: '2022-12-19',
             reliabilityScore: 100,
-            isOfficialSource: true
-          },
-          {
-            id: 'src-rp-2',
-            title: 'Análise do cumprimento das decisões de transparência no Congresso',
-            publisher: 'Agência Lupa',
-            url: 'https://lupa.uol.com.br',
-            publishDate: '2023-03-10',
-            reliabilityScore: 91,
-            isOfficialSource: false
-          }
-        ]
-      },
-      {
-        id: 'rp-fact-2',
-        title: 'Declaração Factual sobre Aprovação da Reforma Tributária',
-        description: 'Atuou na coordenação da votação da Reforma Tributária no Senado Federal, com ampla convergência entre setores econômicos.',
-        category: 'voting_record',
-        date: '2023-11-08',
-        status: 'confirmed',
-        confidenceScore: 95,
-        impactScore: 8,
-        sources: [
-          {
-            id: 'src-rp-3',
-            title: 'Votação do PEC da Reforma Tributária no Senado',
-            publisher: 'Agência Senado',
-            url: 'https://www12.senado.leg.br/noticias',
-            publishDate: '2023-11-08',
-            reliabilityScore: 98,
             isOfficialSource: true
           }
         ]
@@ -253,8 +260,10 @@ export const mockPoliticians: PublicFigure[] = [
     id: 'eduardo-leite',
     name: 'Eduardo Figueiredo Cavalheiro Leite',
     popularName: 'Eduardo Leite',
-    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
+    photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400',
     currentRole: 'Governador do Rio Grande do Sul',
+    roleCategory: 'Governador',
+    politicalStatus: 'em_exercicio',
     politicalParty: 'PSDB',
     state: 'RS',
     biography: 'Bacharel em Direito e político brasileiro. Foi vereador e prefeito de Pelotas e reeleito Governador do estado do Rio Grande do Sul.',
@@ -272,27 +281,6 @@ export const mockPoliticians: PublicFigure[] = [
     tags: ['Rio Grande do Sul', 'Governador', 'PSDB'],
     facts: [
       {
-        id: 'el-fact-1',
-        title: 'Aprovação do Plano de Privatizações e Reformas do Estado',
-        description: 'Realizou a privatização da CEEE e da Corsan dentro do programa de reestruturação fiscal do Rio Grande do Sul.',
-        category: 'political_history',
-        date: '2021-07-08',
-        status: 'confirmed',
-        confidenceScore: 94,
-        impactScore: 6,
-        sources: [
-          {
-            id: 'src-el-1',
-            title: 'Diário Oficial do Estado do Rio Grande do Sul - Leilão CEEE',
-            publisher: 'Governo do Estado do RS',
-            url: 'https://estado.rs.gov.br',
-            publishDate: '2021-07-09',
-            reliabilityScore: 98,
-            isOfficialSource: true
-          }
-        ]
-      },
-      {
         id: 'el-fact-2',
         title: 'Controversia sobre Afirmações de Gastos com Prevenção de Enchentes',
         description: 'Afirmação sobre execução orçamentária do sistema de proteção contra cheias em Porto Alegre passou por checagem de fatos.',
@@ -301,7 +289,6 @@ export const mockPoliticians: PublicFigure[] = [
         status: 'refuted',
         confidenceScore: 88,
         impactScore: -6,
-        notes: 'Verificação contábil demonstrou que verbas aprovadas foram subexecutadas nos anos anteriores à catástrofe.',
         sources: [
           {
             id: 'src-el-2',
@@ -311,15 +298,6 @@ export const mockPoliticians: PublicFigure[] = [
             publishDate: '2024-05-12',
             reliabilityScore: 94,
             isOfficialSource: false
-          },
-          {
-            id: 'src-el-3',
-            title: 'Relatório de Execução Orçamentária TCE-RS',
-            publisher: 'Tribunal de Contas do Estado do RS (TCE-RS)',
-            url: 'https://tce.rs.gov.br',
-            publishDate: '2024-05-15',
-            reliabilityScore: 100,
-            isOfficialSource: true
           }
         ]
       }

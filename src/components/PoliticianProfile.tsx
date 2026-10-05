@@ -1,6 +1,8 @@
 import type { PublicFigure, FactCategory, VerificationStatus } from '../types/politician';
 import { useState } from 'react';
-import { ExternalLink, CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Scale, FileText, Building, Info } from 'lucide-react';
+import { ExternalLink, CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Scale, FileText, Building, Info, UserCheck, Vote } from 'lucide-react';
+import { RecentNewsSection } from './RecentNewsSection';
+import { searchNewsForQuery } from '../services/newsService';
 
 interface PoliticianProfileProps {
   figure: PublicFigure;
@@ -17,6 +19,8 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
 }) => {
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<FactCategory | 'all'>('all');
   const [activeStatusFilter, setActiveStatusFilter] = useState<VerificationStatus | 'all'>('all');
+
+  const newsArticles = searchNewsForQuery(figure.popularName, figure);
 
   const filteredFacts = figure.facts.filter((fact) => {
     if (activeCategoryFilter !== 'all' && fact.category !== activeCategoryFilter) return false;
@@ -42,6 +46,29 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
         return (
           <span className="badge badge-refuted">
             <XCircle size={13} /> Refutado / Falso
+          </span>
+        );
+    }
+  };
+
+  const getPoliticalStatusBadge = (status: PublicFigure['politicalStatus']) => {
+    switch (status) {
+      case 'candidato':
+        return (
+          <span style={{ backgroundColor: '#fef08a', color: '#854d0e', border: '1px solid #fde047', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+            <Vote size={14} /> Candidato a Eleição
+          </span>
+        );
+      case 'em_exercicio':
+        return (
+          <span style={{ backgroundColor: '#dcfce7', color: '#15803d', border: '1px solid #bbf7d0', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+            <UserCheck size={14} /> Em Exercício de Mandato
+          </span>
+        );
+      case 'ex_mandato':
+        return (
+          <span style={{ backgroundColor: '#f1f5f9', color: '#475569', border: '1px solid #cbd5e1', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700 }}>
+            Ex-Mandato / Sem Cargo
           </span>
         );
     }
@@ -97,6 +124,7 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
               }}>
                 {figure.politicalParty} - {figure.state}
               </span>
+              {getPoliticalStatusBadge(figure.politicalStatus)}
             </div>
 
             <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginTop: '0.25rem', fontWeight: 500 }}>
@@ -108,7 +136,7 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
             </p>
 
             <div style={{ display: 'flex', gap: '1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              <span><strong>Cargo Atual:</strong> {figure.currentRole}</span>
+              <span><strong>Situação/Cargo:</strong> {figure.currentRole}</span>
               <span>•</span>
               <span><strong>Vida Pública:</strong> {figure.yearsInPublicOffice} anos</span>
             </div>
@@ -167,6 +195,9 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
         </div>
       </div>
 
+      {/* Recent News & Scandals Section */}
+      <RecentNewsSection newsArticles={newsArticles} politicianName={figure.popularName} />
+
       {/* Facts & Evidence Section */}
       <div className="card" style={{ padding: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.25rem' }}>
@@ -209,7 +240,7 @@ export const PoliticianProfile: React.FC<PoliticianProfileProps> = ({
 
         {filteredFacts.length === 0 ? (
           <p style={{ fontStyle: 'italic', color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>
-            Nenhum fato encontrado para os filtros selecionados.
+            Nenhum fato registrado especificamente nos filtros selecionados.
           </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

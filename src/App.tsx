@@ -5,16 +5,20 @@ import { FilterBar } from './components/FilterBar';
 import { PoliticianProfile } from './components/PoliticianProfile';
 import { ComparisonMatrix } from './components/ComparisonMatrix';
 import { Leaderboard } from './components/Leaderboard';
+import { RecentNewsSection } from './components/RecentNewsSection';
 import { MethodologyModal, SubmitFactModal } from './components/MethodologyModal';
 import { mockPoliticians } from './data/mockPoliticians';
-import type { PublicFigure, FactCategory } from './types/politician';
-import { ShieldCheck, Scale, ArrowRight } from 'lucide-react';
+import type { PublicFigure, FactCategory, PoliticalStatus, RoleCategory } from './types/politician';
+import { searchNewsForQuery } from './services/newsService';
+import { ShieldCheck, Scale, ArrowRight, UserCheck, Vote } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'explore' | 'compare' | 'ranking'>('explore');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedParty, setSelectedParty] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState<FactCategory | 'all'>('all');
+  const [selectedStatus, setSelectedStatus] = useState<PoliticalStatus | 'all'>('all');
+  const [selectedRole, setSelectedRole] = useState<RoleCategory | 'all'>('all');
   const [selectedFigureForProfile, setSelectedFigureForProfile] = useState<PublicFigure | null>(null);
 
   // State for compare figures list
@@ -39,14 +43,22 @@ export function App() {
         p.state.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesParty = selectedParty === 'all' || p.politicalParty === selectedParty;
+      const matchesStatus = selectedStatus === 'all' || p.politicalStatus === selectedStatus;
+      const matchesRole = selectedRole === 'all' || p.roleCategory === selectedRole;
 
       const matchesCategory =
         selectedCategory === 'all' ||
         p.facts.some((fact) => fact.category === selectedCategory);
 
-      return matchesSearch && matchesParty && matchesCategory;
+      return matchesSearch && matchesParty && matchesStatus && matchesRole && matchesCategory;
     });
-  }, [searchTerm, selectedParty, selectedCategory]);
+  }, [searchTerm, selectedParty, selectedStatus, selectedRole, selectedCategory]);
+
+  // Dynamic news feed for generic or active search query
+  const liveQueryNews = useMemo(() => {
+    if (!searchTerm.trim()) return [];
+    return searchNewsForQuery(searchTerm, null);
+  }, [searchTerm]);
 
   const handleToggleCompare = (figure: PublicFigure) => {
     if (compareList.some((f) => f.id === figure.id)) {
@@ -57,6 +69,29 @@ export function App() {
         return;
       }
       setCompareList([...compareList, figure]);
+    }
+  };
+
+  const getPoliticalStatusBadge = (status: PublicFigure['politicalStatus']) => {
+    switch (status) {
+      case 'candidato':
+        return (
+          <span style={{ backgroundColor: '#fef08a', color: '#854d0e', border: '1px solid #fde047', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+            <Vote size={12} /> Candidato
+          </span>
+        );
+      case 'em_exercicio':
+        return (
+          <span style={{ backgroundColor: '#dcfce7', color: '#15803d', border: '1px solid #bbf7d0', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+            <UserCheck size={12} /> Em Exercício
+          </span>
+        );
+      case 'ex_mandato':
+        return (
+          <span style={{ backgroundColor: '#f1f5f9', color: '#475569', border: '1px solid #cbd5e1', padding: '0.15rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
+            Ex-Mandato
+          </span>
+        );
     }
   };
 
@@ -100,10 +135,10 @@ export function App() {
             }}>
               <div style={{ maxWidth: '680px' }}>
                 <h2 style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--primary-hover)', margin: '0 0 0.5rem' }}>
-                  Busca de Histórico Factual de Figuras Públicas
+                  Busca de Histórico Factual de Qualquer Candidato ou Figura Pública
                 </h2>
                 <p style={{ fontSize: '0.9rem', color: '#1e3a8a', margin: 0, lineHeight: 1.5 }}>
-                  Consulte histórico político, registros judiciais e checagem de fatos com fontes governamentais e de imprensa independente auditáveis.
+                  Consulte histórico, escândalos, gastos públicos e últimas notícias de candidatos a Presidente, Prefeito, Deputado, Senador e mais com fontes auditáveis.
                 </p>
               </div>
 
@@ -120,15 +155,28 @@ export function App() {
 
             {/* Search & Filter Controls */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                placeholder="Buscar qualquer candidato por nome, cargo (ex: Prefeito, Presidente, Deputado) ou estado..."
+              />
               <FilterBar
                 selectedParty={selectedParty}
                 setSelectedParty={setSelectedParty}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
+                selectedStatus={selectedStatus}
+                setSelectedStatus={setSelectedStatus}
+                selectedRole={selectedRole}
+                setSelectedRole={setSelectedRole}
                 parties={parties}
               />
             </div>
+
+            {/* Live Search News Feed */}
+            {liveQueryNews.length > 0 && (
+              <RecentNewsSection newsArticles={liveQueryNews} politicianName={`termo "${searchTerm}"`} />
+            )}
 
             {/* Politician Cards Grid */}
             <div style={{
@@ -166,16 +214,19 @@ export function App() {
                         />
 
                         <div style={{ flex: 1 }}>
-                          <span style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 700,
-                            color: 'var(--primary)',
-                            backgroundColor: 'var(--primary-light)',
-                            padding: '0.15rem 0.5rem',
-                            borderRadius: '4px'
-                          }}>
-                            {figure.politicalParty} - {figure.state}
-                          </span>
+                          <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.2rem' }}>
+                            <span style={{
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              color: 'var(--primary)',
+                              backgroundColor: 'var(--primary-light)',
+                              padding: '0.15rem 0.5rem',
+                              borderRadius: '4px'
+                            }}>
+                              {figure.politicalParty} - {figure.state}
+                            </span>
+                            {getPoliticalStatusBadge(figure.politicalStatus)}
+                          </div>
 
                           <h3 style={{
                             fontSize: '1.15rem',
